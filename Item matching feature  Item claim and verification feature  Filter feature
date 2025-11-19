@@ -1,0 +1,98 @@
+const Item = require('../models/Item');     
+const Claim = require('../models/Claim'); 
+const { notifyUser, notifyFinder } = require('../utils/notifications'); // your existing notify
+
+// 1. ITEM MATCHING FEATURE (call this after saving any new item)
+async function runItemMatching(newItem) {
+  const opposite = newItem.type === 'lost' ? 'found' : 'lost';
+
+  const matches = await Item.find({
+    type: opposite,
+    status: 'open',
+    category: newItem.category,
+    $or: [
+      { brand: { $regex: newItem.brand || '', $options: 'i' } },
+      { color: { $regex: newItem.color || '', $options: 'i' } }
+    ],
+    createdAt: {
+      $gte: new Date(newItem.date - 14*24*60*60*1000),
+      $lte: new Date(newItem.date + 14*24*60*60*1000)
+    }
+  }).limit(15);
+
+  for (let m of matches) {
+    const score = Math.round(similarity(`${m.title} ${m.description}`, `${newItem.title} ${newItem.description}`) * 100);
+    if (score > 60) {
+      notifyUser(m.userId, { ...newItem.toObject(), matchScore: score });
+    }
+  }
+}
+
+// Simple text similarity
+function similarity(s1, s2) {
+  s1 = s1.toLowerCase(); s2 = s2.toLowerCase();
+  if (s1.length === 0) return 1;
+  const longer = s1.length > s2.length ? s1 : s2;
+  const shorter = s1.length > s2.length ? s2 : s1;
+  const distance = [...Array(longer.length + 1)].map(() => 0);
+  // Levenshtein distance in 15 lines (fast enough)
+  for (let i = 0; i <= longer.length; i++) {
+    let prev = i;
+    for (let j = 0; j <= shorter.length; j++) {
+      if (i && j) {
+        const cost = longer[i-1] === shorter[j-1] ? 0 : 1;
+        const temp = distance[j];
+        distance[j] = Math.min(prev + 1, distance[j] + 1, temp + cost);
+        prev = temp;
+      }
+    }
+  }
+  return (longer.length - distance[shorter.length]) / longer.length;
+}
+
+// 2. CLAIM & VERIFICATION FEATURE
+async function createClaim(req, res) {
+  const claim = await Claim.create({
+    itemId: req.params.itemId,
+    claimantId: req.user.id,
+    proofPhotos: req.body.photos || [],
+    answers: req.body.answers || {},
+    status: 'pending'
+  });
+  const item = await Item.findById(req.params.itemId);
+  notifyFinder(item.userId, claim._id);
+  res.json({ success: true, claim });
+}
+
+// POST /claim/:id/approve
+async function approveClaim(req, res) {
+  const claim = await Claim.findById(req.params.id);
+  const item = await Item.findById(claim.itemId);
+  if (item.userId !== req.user.id) return res.status(403).json({error:'Not owner'});
+
+  await Claim.findByIdAndUpdate(req.params.id, { status: 'approved' });
+  await Item.findByIdAndUpdate(claim.itemId, { status: 'claimed' });
+  res.json({ success: true });
+}
+
+// 3. FILTER FEATURE
+async function getFilteredItems(req, res) {
+  const { type, category, state, brand, color, keyword } = req.query;
+  const filter = { status: 'open', type };
+
+  if (category) filter.category = category;
+  if (state) filter.state = state;
+  if (brand) filter.brand = { $regex: brand, $options: 'i' };
+  if (color) filter.color = { $regex: color, $options: 'i' };
+  if (keyword) filter.$text = { $search: keyword };
+
+  const items = await Item.find(filter).sort({ createdAt: -1 }).limit(50);
+  res.json(items);
+}
+// Export everything
+module.exports = {
+  runItemMatching,
+  createClaim,
+  approveClaim,
+  getFilteredItems
+};

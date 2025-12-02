@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Signup</title>
+  <style>
+    /* Reset defaults */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #A7A6FF; /* Purple tone */
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      height: 80px;
+      background-color: #A7A6FF;
+    }
+
+    main {
+      flex: 1;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Login | Signup */
+    .auth-tabs {
+      margin-bottom: 50px;
+      font-size: 1.3rem;
+    }
+
+    .auth-tabs a {
+      text-decoration: none;
+      font-weight: 600;
+      color: black;
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    .auth-tabs a:hover {
+      color: #4B46FF;
+    }
+
+    .auth-tabs span {
+      font-weight: 600;
+      color: #000;
+    }
+
+    /* Form box */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      width: 320px;
+      text-align: left;
+    }
+
+    label {
+      font-weight: 500;
+      color: #333;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-bottom: 2px solid #4B46FF;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #4B46FF;
+    }
+
+    /* Enter button */
+    button {
+      background-color: #dcdcdc;
+  
+      font-weight: 600;
+      border: none;
+      padding: 10px 0;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #4B46FF;
+      color: #fff;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #A7A6FF;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      form {
+        width: 90%;
+      }
+
+      .auth-tabs {
+        font-size: 1.1rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header></header>
+
+  <main>
+    <div class="auth-tabs">
+      <a href="login.html">Login</a> | <a href="signup.html">Signup</a>
+    </div>
+
+    <form id="loginForm">
+      <div>
+        <label>Email Address</label>
+        <input type="email" placeholder="user@digital.com" required>
+      </div>
+
+      <div>
+        <label>Password</label>
+        <input type="password" placeholder="********************" required>
+      </div>
+
+      <button type="submit">Enter</button>
+    </form>
+  </main>
+
+  <footer>
+    <span>Group 8</span>
+    <span>To report errors , send an email</span>
+    <span>2025</span>
+  </footer>
+
+  <script>
+    // Example functionality
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      alert("Logging in...");
+      // You can redirect here, e.g.:
+      // window.location.href = "home.html";
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Found</title>
+    <link rel="stylesheet" href="report-lost.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="top-bar"></div>
+
+    <div class="container">
+
+        <form class="form" action="report-found.php" method="POST" enctype="multipart/form-data">
+
+    <label class="upload-box">
+        <img class="preview-image" src="" alt="" style="display:none;">
+        <span class="upload-text">Upload Image</span>
+        <input type="file" name="image" class="file-input" accept="image/*" hidden>
+    </label>
+
+    <label class="label">Description</label>
+    <input type="text" name="description" class="input" placeholder="A green water bottle">
+
+    <label class="label">Color</label>
+    <input type="text" name="color" class="input" placeholder="Yellow">
+
+    <label class="label">Object</label>
+    <input type="text" name="object" class="input" placeholder="Umbrella">
+
+    <button type="submit" class="btn">Report</button>
+
+        </form>
+
+    </div>
+
+    <div class="footer">
+        <span>Group 8</span>
+        <span>To report errors, send an email</span>
+        <span>2025</span>
+    </div>
+
+<script>
+const fileInput = document.querySelector('.file-input');
+const uploadText = document.querySelector('.upload-text');
+const previewImage = document.querySelector('.preview-image');
+const uploadBox = document.querySelector('.upload-box');
+
+fileInput.addEventListener('change', () => {
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            uploadText.style.display = 'none';
+
+            // Adjust the upload box height based on image natural height
+            const img = new Image();
+            img.src = e.target.result;
+            img.onload = () => {
+                let newHeight = Math.min(img.height, 300); // max height 300px
+                uploadBox.style.height = `${newHeight}px`;
+            }
+        }
+
+        reader.readAsDataURL(fileInput.files[0]);
+    } else {
+        previewImage.src = '';
+        previewImage.style.display = 'none';
+        uploadText.style.display = 'block';
+        uploadBox.style.height = '150px'; // reset default height
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.top-bar {
+    height: 90px;
+    background: #818cf8;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-sizing: border-box;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+}
+
+.container {
+    width: 95%;           
+    max-width: 1000px;     
+    margin: 50px 0 30px 50px; 
+    text-align: center;
+    box-sizing: border-box; 
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    gap: 40px; 
+}
+
+.input {
+    flex: 1;           
+    min-width: 0;       
+    padding: 20px 15px;
+    background: #c4c4c4;
+    border: 3px solid #818cf8;
+    border-radius: 15px;
+    font-family: 'roboto', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #000000;
+    margin: 0;         
+    box-sizing: border-box; 
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+}
+.action-buttons .btn {
+    flex: 1;       
+    min-width: 100px;
+}
+
+.btn {
+    min-width: 150px;
+    padding: 20px 15px;
+    background: #c4c4c4;
+    border: none;
+    border-radius: 15px;
+    font-family: 'poppins', sans-serif;
+    font-size: 16px;
+    color: #818cf8;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background: #818cf8;
+    color: white;
+}
+
+.footer {
+    background: #818cf8;
+    padding: 18px;
+    color: white;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'poppins', sans-serif;
+    font-weight: 600;
+    margin-top: auto;
+}
+
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .btn {
+        font-size: 14px;
+        padding: 10px 16px;
+    }
+
+    .top-bar {
+        height: 70px;
+        font-size: 18px;
+    }
+
+    .footer {
+        font-size: 14px;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .input {
+        padding: 10px;
+        font-size: 14px;
+    }
+}

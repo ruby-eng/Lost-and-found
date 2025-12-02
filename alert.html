@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Alert | Lost and Found</title>
+
+  <!-- EmailJS SDK -->
+  <script type="text/javascript" src="https://www.emailjs.com/sdk/email.min.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #A7A6FF;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      height: 80px;
+      background-color: #A7A6FF;
+    }
+
+    main {
+      flex: 1;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #4B46FF;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 320px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-bottom: 2px solid #4B46FF;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #4B46FF;
+    }
+
+    button {
+      background-color: #dcdcdc;
+      color: #4B46FF;
+      font-weight: 600;
+      border: none;
+      padding: 10px 0;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #4B46FF;
+      color: #fff;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    footer {
+      background-color: #A7A6FF;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 700px) {
+      form {
+        width: 90%;
+      }
+      footer {
+        flex-direction: column;
+        gap: 5px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header></header>
+
+  <main>
+    <h1>Email Alert</h1>
+    <p>Subscribe to receive an alert when your lost item is found.</p>
+
+    <form id="alertForm">
+      <input type="email" id="email" placeholder="Enter your email address" required>
+      <button type="submit">Subscribe</button>
+    </form>
+
+    <p id="message"></p>
+  </main>
+
+  <footer>
+    <span>Group 8</span>
+    <span>To report errors , send an email</span>
+    <span>2025</span>
+  </footer>
+
+  <script>
+    // Initialize EmailJS with your public key
+    (function() {
+      emailjs.init("iBZcrIJvCzZAwPsq6"); // Replace with your actual public key
+    })();
+
+    document.getElementById("alertForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const emailInput = document.getElementById("email");
+      const message = document.getElementById("message");
+
+      // Send email via EmailJS
+      emailjs.send("service_b3t54aa", "template_oeavs0o", {
+        user_email: emailInput.value
+      })
+      .then(() => {
+        message.style.color = "green";
+        message.textContent = "✅ Subscription successful! You’ll receive alerts soon.";
+        emailInput.value = "";
+      }, (error) => {
+        message.style.color = "red";
+        message.textContent = "❌ Error: Unable to send. Try again later.";
+        console.error("EmailJS error:", error);
+      });
+    });
+  </script>
+
+</body>
+</html>
